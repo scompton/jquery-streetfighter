@@ -46,6 +46,6 @@ body {
   display: none;
   position: relative;
   top: 167px;
-  left: 212px;
+  left: -212px;
   float: left;
 }
