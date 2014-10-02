@@ -1,16 +1,36 @@
+var ryuVisible;
+var xDown;
+
 $(document).ready(function() {
+  ryuVisible = $('.ryu-still');
+  xDown = false;
+
   $('.ryu').mouseenter(function() {
-    $('.ryu-still').hide();
+    if (xDown) {
+      ryuVisible = $('.ryu-ready');
+      return;
+    }
+    ryuVisible.hide();
     $('.ryu-ready').show();
+    ryuVisible = $('.ryu-ready');
   })
   .mouseleave(function() {
-    $('.ryu-ready').hide();
+    if (xDown) {
+      ryuVisible = $('.ryu-still');
+      return;
+    }
+    ryuVisible.hide();
     $('.ryu-still').show();
+    ryuVisible = $('.ryu-still');
   })
   .mousedown(function() {
+    if (xDown) {
+      return;
+    }
     playHadouken();
-    $('.ryu-ready').hide();
+    ryuVisible.hide();
     $('.ryu-throwing').show();
+    ryuVisible = $('.ryu-throwing');
     $('.hadouken').finish().show()
     .animate(
       {'left': '300px'},
@@ -23,8 +43,30 @@ $(document).ready(function() {
   })
   .mouseup(function() {
     // ryu goes back to his ready position
-    $('.ryu-throwing').hide();
+    if (xDown) {
+      ryuVisible = $('.ryu-ready');
+      return;
+    }
+    ryuVisible.hide();
     $('.ryu-ready').show();
+    ryuVisible = $('.ryu-ready');
+  });
+
+  $(this).keydown(function(event) {
+    var key = String.fromCharCode(event.which);
+    if (key==='X') {
+      ryuVisible.hide();
+      $('.ryu-cool').show();
+    }
+    xDown = true;
+  })
+  .keyup(function(event) {
+    var key = String.fromCharCode(event.which);
+    if (key==='X') {
+      $('.ryu-cool').hide();
+      ryuVisible.show();
+      xDown = false;
+    }
   });
 });
 
